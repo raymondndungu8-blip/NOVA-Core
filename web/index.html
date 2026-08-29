@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOVA Core — Your AI Fitness Coach</title>
+  <meta name="description" content="NOVA Core is your personal AI-powered fitness coach. Track workouts, scan your form with AI, analyze nutrition, and crush your goals with intelligent progression." />
+  <meta property="og:title" content="NOVA Core — Your AI Fitness Coach" />
+  <meta property="og:description" content="AI-powered workout tracking, real-time form analysis, and intelligent coaching — all in one premium fitness app." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:         #0F0F1A;
+      --bg-card:    #1A1A2E;
+      --bg-elev:    #1E1E30;
+      --orange:     #FF6600;
+      --orange-br:  #FF8833;
+      --orange-dim: #CC4400;
+      --orange-glow:rgba(255,102,0,0.35);
+      --orange-sub: rgba(255,102,0,0.12);
+      --orange-brd: rgba(255,102,0,0.22);
+      --green:      #00FF88;
+      --violet:     #8B5CF6;
+      --txt:        #F0F0FF;
+      --txt-sec:    #A0A0C0;
+      --txt-muted:  #505070;
+      --glass:      rgba(26,26,46,0.75);
+      --glass-brd:  rgba(255,255,255,0.08);
+      --glass-shine:rgba(255,255,255,0.05);
+      --font-head:  'Space Grotesk', sans-serif;
+      --font-body:  'Inter', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--txt);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--orange-dim); border-radius: 3px; }
+
+    /* ── Utility ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 100px 0; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--orange-sub);
+      border: 1px solid var(--orange-brd);
+      color: var(--orange);
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 7px 16px; border-radius: 50px;
+      margin-bottom: 20px;
+    }
+    .badge::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+    .grad-text {
+      background: linear-gradient(135deg, #fff 0%, var(--orange) 60%, var(--orange-br) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-label {
+      font-size: 13px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--orange);
+      margin-bottom: 12px;
+    }
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(15,15,26,0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom-color: var(--glass-brd);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      height: 72px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 12px var(--orange-glow);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    .nav-logo-text { color: var(--txt); }
+    .nav-logo-accent { color: var(--orange); }
+    .nav-links { display: flex; align-items: center; gap: 36px; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--txt-sec);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--txt); }
+    .nav-cta {
+      background: var(--orange);
+      color: #fff !important; font-weight: 700 !important;
+      padding: 10px 22px; border-radius: 50px;
+      box-shadow: 0 0 20px var(--orange-glow);
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 30px var(--orange-glow) !important; }
+    .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; color: var(--txt); font-size: 24px; }
+
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden; padding-top: 72px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: 
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255,102,0,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(139,92,246,0.08) 0%, transparent 55%),
+        var(--bg);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: 
+        linear-gradient(rgba(255,102,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,102,0,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 70% 40%, black 0%, transparent 75%);
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+      max-width: 1200px; margin: 0 auto; padding: 80px 24px;
+    }
+    .hero-left { display: flex; flex-direction: column; }
+    .hero-eyebrow { margin-bottom: 24px; }
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(44px, 5.5vw, 76px);
+      font-weight: 700; line-height: 1.06; letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+    .hero-title span { display: block; }
+    .hero-desc {
+      font-size: 18px; color: var(--txt-sec); line-height: 1.7;
+      max-width: 460px; margin-bottom: 40px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 56px; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--orange); color: #fff;
+      font-weight: 700; font-size: 16px;
+      padding: 16px 32px; border-radius: 50px;
+      box-shadow: 0 0 30px var(--orange-glow);
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer; border: none;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 40px var(--orange-glow); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; color: var(--txt);
+      font-weight: 600; font-size: 16px;
+      padding: 16px 32px; border-radius: 50px;
+      border: 1px solid var(--glass-brd);
+      backdrop-filter: blur(10px);
+      background: var(--glass);
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .btn-secondary:hover { border-color: var(--orange-brd); background: var(--orange-sub); }
+    .hero-stats { display: flex; gap: 32px; }
+    .hero-stat { }
+    .hero-stat-num {
+      font-family: var(--font-head); font-size: 28px; font-weight: 700;
+      color: var(--txt); line-height: 1;
+    }
+    .hero-stat-num span { color: var(--orange); }
+    .hero-stat-label { font-size: 12px; color: var(--txt-muted); margin-top: 4px; font-weight: 500; letter-spacing: 0.5px; }
+    .hero-stat-divider { width: 1px; background: var(--glass-brd); align-self: stretch; }
+
+    /* Hero visual */
+    .hero-right { position: relative; display: flex; justify-content: center; }
+    .hero-phone-wrap {
+      position: relative; width: 300px;
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+    .hero-phone {
+      width: 100%; border-radius: 44px;
+      border: 2px solid rgba(255,102,0,0.25);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 30px 80px rgba(0,0,0,0.6),
+        0 0 60px rgba(255,102,0,0.18);
+      overflow: hidden;
+    }
+    .hero-phone img { width: 100%; }
+    .hero-phone-mockup {
+      background: var(--bg-card); padding: 16px;
+      border-radius: 44px; overflow: hidden;
+    }
+    .hero-phone-status {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 8px 12px;
+    }
+    .hero-phone-time { font-size: 13px; font-weight: 600; }
+    .hero-phone-icons { font-size: 12px; color: var(--txt-sec); }
+
+    /* Floating cards */
+    .float-card {
+      position: absolute;
+      background: var(--glass); border: 1px solid var(--glass-brd);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-radius: 18px; padding: 14px 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    .float-card-1 { top: 5%; right: -30px; animation: float-1 6s ease-in-out infinite; }
+    .float-card-2 { bottom: 18%; left: -50px; animation: float-2 7s ease-in-out infinite; }
+    @keyframes float-1 { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-12px) rotate(-2deg)} }
+    @keyframes float-2 { 0%,100%{transform:translateY(0) rotate(1.5deg)} 50%{transform:translateY(-10px) rotate(1.5deg)} }
+    .float-card-label { font-size: 11px; color: var(--txt-muted); font-weight: 600; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .float-card-value { font-size: 20px; font-weight: 700; color: var(--orange); }
+    .float-card-sub { font-size: 11px; color: var(--txt-sec); margin-top: 2px; }
+    .float-card-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.07); margin-top: 10px; overflow: hidden; }
+    .float-card-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--orange), var(--orange-br)); transition: width 1s ease; }
+
+    /* ══════════════════════════════════════
+       TRUSTED
+    ══════════════════════════════════════ */
+    .trusted {
+      border-top: 1px solid var(--glass-brd);
+      border-bottom: 1px solid var(--glass-brd);
+      padding: 32px 0; background: rgba(26,26,46,0.4);
+    }
+    .trusted-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; gap: 40px; flex-wrap: wrap;
+    }
+    .trusted-label { font-size: 13px; color: var(--txt-muted); font-weight: 500; white-space: nowrap; }
+    .trusted-logos { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+    .trusted-logo {
+      font-family: var(--font-head); font-size: 16px; font-weight: 700;
+      color: var(--txt-muted); opacity: 0.5; letter-spacing: -0.5px;
+      transition: opacity 0.2s;
+    }
+    .trusted-logo:hover { opacity: 0.8; }
+
+    /* ══════════════════════════════════════
+       FEATURES
+    ══════════════════════════════════════ */
+    .features-header { text-align: center; max-width: 680px; margin: 0 auto 72px; }
+    .features-header h2 {
+      font-family: var(--font-head); font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px;
+    }
+    .features-header p { font-size: 17px; color: var(--txt-sec); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-brd);
+      border-radius: 24px; padding: 32px;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,102,0,0.4), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .feature-card:hover { transform: translateY(-6px); border-color: var(--orange-brd); box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px var(--orange-sub); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 20px;
+    }
+    .feature-icon.orange { background: var(--orange-sub); }
+    .feature-icon.green { background: rgba(0,255,136,0.10); }
+    .feature-icon.violet { background: rgba(139,92,246,0.10); }
+    .feature-card h3 {
+      font-family: var(--font-head); font-size: 19px; font-weight: 700;
+      margin-bottom: 10px; letter-spacing: -0.3px;
+    }
+    .feature-card p { font-size: 14px; color: var(--txt-sec); line-height: 1.7; }
+    .feature-tag {
+      display: inline-block; margin-top: 18px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 50px;
+    }
+    .feature-tag.orange { background: var(--orange-sub); color: var(--orange); }
+    .feature-tag.green { background: rgba(0,255,136,0.10); color: var(--green); }
+    .feature-tag.violet { background: rgba(139,92,246,0.10); color: var(--violet); }
+
+    /* ══════════════════════════════════════
+       HOW IT WORKS
+    ══════════════════════════════════════ */
+    .how { background: linear-gradient(180deg, var(--bg) 0%, rgba(26,26,46,0.5) 50%, var(--bg) 100%); }
+    .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .how-steps { display: flex; flex-direction: column; gap: 0; }
+    .how-step {
+      display: flex; gap: 20px; padding: 28px 0;
+      border-bottom: 1px solid var(--glass-brd);
+      cursor: pointer; position: relative;
+      transition: padding-left 0.3s;
+    }
+    .how-step:last-child { border-bottom: none; }
+    .how-step:hover { padding-left: 8px; }
+    .how-step-num {
+      font-family: var(--font-head); font-size: 13px; font-weight: 700;
+      color: var(--orange); background: var(--orange-sub); border: 1px solid var(--orange-brd);
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .how-step:hover .how-step-num { background: var(--orange); color: #fff; box-shadow: 0 0 20px var(--orange-glow); }
+    .how-step-content h3 {
+      font-family: var(--font-head); font-size: 18px; font-weight: 700;
+      margin-bottom: 6px; letter-spacing: -0.3px;
+    }
+    .how-step-content p { font-size: 14px; color: var(--txt-sec); line-height: 1.7; }
+    .how-visual { position: relative; }
+    .how-screen {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-brd);
+      border-radius: 32px; overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 0 60px rgba(255,102,0,0.1);
+    }
+    .how-screen-header {
+      padding: 20px 24px 0;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .how-screen-title { font-family: var(--font-head); font-weight: 700; font-size: 15px; }
+    .how-screen-badge { font-size: 11px; background: var(--orange-sub); color: var(--orange); padding: 4px 10px; border-radius: 50px; font-weight: 700; }
+    .how-screen-body { padding: 20px 24px 24px; }
+    .scan-animation {
+      height: 220px; border-radius: 20px; position: relative;
+      background: linear-gradient(135deg, rgba(255,102,0,0.08) 0%, rgba(15,15,26,0.8) 100%);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,102,0,0.15);
+      margin-bottom: 16px;
+    }
+    .scan-line {
+      position: absolute; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+      box-shadow: 0 0 10px var(--orange-glow);
+      animation: scan 2.5s ease-in-out infinite;
+    }
+    @keyframes scan { 0%{top:10%} 50%{top:85%} 100%{top:10%} }
+    .scan-corners { position: absolute; inset: 12px; pointer-events: none; }
+    .scan-corners::before, .scan-corners::after {
+      content: ''; position: absolute;
+      width: 28px; height: 28px;
+      border-color: var(--orange); border-style: solid; border-width: 0;
+    }
+    .scan-corners::before { top: 0; left: 0; border-top-width: 3px; border-left-width: 3px; border-radius: 4px 0 0 0; }
+    .scan-corners::after { bottom: 0; right: 0; border-bottom-width: 3px; border-right-width: 3px; border-radius: 0 0 4px 0; }
+    .scan-avatar { font-size: 64px; opacity: 0.6; }
+    .scan-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .scan-metric {
+      background: var(--bg); border: 1px solid var(--glass-brd);
+      border-radius: 12px; padding: 12px; text-align: center;
+    }
+    .scan-metric-val { font-size: 18px; font-weight: 800; color: var(--orange); }
+    .scan-metric-lbl { font-size: 10px; color: var(--txt-muted); margin-top: 2px; font-weight: 600; letter-spacing: 0.5px; }
+
+    /* ══════════════════════════════════════
+       STATS SECTION
+    ══════════════════════════════════════ */
+    .stats { background: var(--bg-card); border-top: 1px solid var(--glass-brd); border-bottom: 1px solid var(--glass-brd); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; }
+    .stat-item {
+      padding: 52px 32px; text-align: center;
+      border-right: 1px solid var(--glass-brd);
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item::after {
+      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 0; height: 2px; background: var(--orange);
+      transition: width 0.4s ease;
+    }
+    .stat-item:hover { background: var(--orange-sub); }
+    .stat-item:hover::after { width: 60%; }
+    .stat-num {
+      font-family: var(--font-head); font-size: 48px; font-weight: 700;
+      line-height: 1; letter-spacing: -2px;
+      background: linear-gradient(135deg, #fff, var(--orange));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 10px;
+    }
+    .stat-label { font-size: 14px; color: var(--txt-sec); font-weight: 500; }
+
+    /* ══════════════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════════════ */
+    .testimonials-header { text-align: center; margin-bottom: 56px; }
+    .testimonials-header h2 {
+      font-family: var(--font-head); font-size: clamp(30px, 3.5vw, 46px);
+      font-weight: 700; letter-spacing: -1.5px; margin-bottom: 12px;
+    }
+    .testimonials-header p { color: var(--txt-sec); font-size: 16px; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .testimonial-card {
+      background: var(--bg-card); border: 1px solid var(--glass-brd);
+      border-radius: 24px; padding: 28px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .testimonial-card:hover { transform: translateY(-4px); border-color: var(--orange-brd); }
+    .testimonial-stars { color: var(--orange); font-size: 16px; margin-bottom: 14px; letter-spacing: 2px; }
+    .testimonial-text { font-size: 15px; color: var(--txt-sec); line-height: 1.75; margin-bottom: 22px; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .testimonial-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .testimonial-name { font-weight: 700; font-size: 14px; }
+    .testimonial-role { font-size: 12px; color: var(--txt-muted); margin-top: 2px; }
+
+    /* ══════════════════════════════════════
+       CTA
+    ══════════════════════════════════════ */
+    .cta-section { text-align: center; padding: 120px 0; position: relative; overflow: hidden; }
+    .cta-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(255,102,0,0.12) 0%, transparent 70%);
+    }
+    .cta-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 0 24px; }
+    .cta-content h2 {
+      font-family: var(--font-head); font-size: clamp(36px, 5vw, 64px);
+      font-weight: 700; letter-spacing: -2px; line-height: 1.08; margin-bottom: 20px;
+    }
+    .cta-content p { font-size: 17px; color: var(--txt-sec); margin-bottom: 40px; }
+    .cta-input-row {
+      display: flex; gap: 12px; max-width: 480px; margin: 0 auto;
+    }
+    .cta-input {
+      flex: 1; background: var(--bg-card); border: 1px solid var(--glass-brd);
+      border-radius: 50px; padding: 14px 22px;
+      font-size: 15px; color: var(--txt); font-family: var(--font-body);
+      outline: none; transition: border-color 0.2s;
+    }
+    .cta-input::placeholder { color: var(--txt-muted); }
+    .cta-input:focus { border-color: var(--orange-brd); }
+    .cta-note { font-size: 12px; color: var(--txt-muted); margin-top: 14px; }
+    .cta-badges { display: flex; justify-content: center; gap: 24px; margin-top: 40px; flex-wrap: wrap; }
+    .cta-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--txt-sec); }
+    .cta-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      background: var(--bg-card); border-top: 1px solid var(--glass-brd);
+      padding: 60px 0 40px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    }
+    .footer-brand { }
+    .footer-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .footer-logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+    .footer-logo-text { font-family: var(--font-head); font-size: 20px; font-weight: 700; }
+    .footer-desc { font-size: 14px; color: var(--txt-muted); line-height: 1.7; max-width: 280px; margin-bottom: 24px; }
+    .footer-social { display: flex; gap: 12px; }
+    .footer-social-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--glass-brd);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .footer-social-btn:hover { background: var(--orange-sub); border-color: var(--orange-brd); }
+    .footer-col h4 { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a { font-size: 14px; color: var(--txt-sec); transition: color 0.2s; }
+    .footer-col a:hover { color: var(--orange); }
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto; padding: 28px 24px 0;
+      border-top: 1px solid var(--glass-brd); margin-top: 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 13px; color: var(--txt-muted); }
+    .footer-copy span { color: var(--orange); }
+    .footer-pills { display: flex; gap: 16px; flex-wrap: wrap; }
+    .footer-pill { font-size: 12px; color: var(--txt-muted); transition: color 0.2s; }
+    .footer-pill:hover { color: var(--txt-sec); }
+
+    /* ══════════════════════════════════════
+       MOBILE MENU
+    ══════════════════════════════════════ */
+    .mobile-menu {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(15,15,26,0.97); backdrop-filter: blur(20px);
+      display: flex; flex-direction: column;
+      padding: 80px 32px 40px;
+      transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-menu-close {
+      position: absolute; top: 20px; right: 24px;
+      background: none; border: none; font-size: 32px; color: var(--txt);
+      cursor: pointer;
+    }
+    .mobile-menu a {
+      font-family: var(--font-head); font-size: 28px; font-weight: 700;
+      color: var(--txt); padding: 12px 0; border-bottom: 1px solid var(--glass-brd);
+      display: block; transition: color 0.2s, padding-left 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--orange); padding-left: 8px; }
+    .mobile-menu .mobile-cta { margin-top: 28px; border: none; }
+    .mobile-menu .mobile-cta a {
+      background: var(--orange); color: #fff; text-align: center;
+      border-radius: 50px; border: none; padding: 16px;
+      box-shadow: 0 0 30px var(--orange-glow);
+    }
+
+    /* ══════════════════════════════════════
+       SCROLL ANIMATIONS
+    ══════════════════════════════════════ */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 980px) {
+      .hero-content { grid-template-columns: 1fr; gap: 40px; text-align: center; padding: 60px 24px; }
+      .hero-right { justify-content: center; }
+      .float-card-1 { right: 0; }
+      .float-card-2 { left: 0; }
+      .hero-desc,  .hero-actions { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .features-grid { grid-template-columns: repeat(2,1fr); }
+      .how-grid { grid-template-columns: 1fr; }
+      .how-visual { order: -1; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(3) { border-right: 1px solid var(--glass-brd); }
+      .testimonials-grid { grid-template-columns: repeat(2,1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .nav-mobile-btn { display: block; }
+    }
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .stat-item:nth-child(3) { border-right: none; }
+      .stat-item:nth-child(even) { border-right: none; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-phone-wrap { width: 240px; }
+      .hero-stat-divider { display: none; }
+      .cta-input-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-dot"></div>
+      <span class="nav-logo-text">NOVA <span class="nav-logo-accent">Core</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#testimonials">Community</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#download" class="nav-cta">Get the App</a>
+    </div>
+    <button class="nav-mobile-btn" id="mobileMenuBtn" aria-label="Open menu">☰</button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">×</button>
+  <a href="#features" onclick="closeMobileMenu()">Features</a>
+  <a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a>
+  <a href="#testimonials" onclick="closeMobileMenu()">Community</a>
+  <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+  <div class="mobile-cta"><a href="#download" onclick="closeMobileMenu()">Get the App →</a></div>
+</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="badge">AI-Powered Fitness</span>
+      </div>
+      <h1 class="hero-title">
+        <span>Train Smarter,</span>
+        <span class="grad-text">Not Harder.</span>
+      </h1>
+      <p class="hero-desc">
+        NOVA Core is your personal AI fitness coach — it scans your form, tracks every rep, analyzes your nutrition, and builds an intelligent plan that evolves with you.
+      </p>
+      <div class="hero-actions">
+        <a href="#download" class="btn-primary">
+          🚀 Start Free Today
+        </a>
+        <a href="#how-it-works" class="btn-secondary">
+          ▶ Watch It Work
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">50<span>k+</span></div>
+          <div class="hero-stat-label">Active Athletes</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">98<span>%</span></div>
+          <div class="hero-stat-label">Form Accuracy</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">4.9<span>★</span></div>
+          <div class="hero-stat-label">App Rating</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-phone-wrap">
+        <!-- Floating cards -->
+        <div class="float-card float-card-1">
+          <div class="float-card-label">TODAY'S STREAK</div>
+          <div class="float-card-value">🔥 12 Days</div>
+          <div class="float-card-sub">Personal best!</div>
+        </div>
+        <div class="float-card float-card-2">
+          <div class="float-card-label">WEEKLY GOAL</div>
+          <div class="float-card-value">3 / 4</div>
+          <div class="float-card-bar"><div class="float-card-bar-fill" style="width:75%"></div></div>
+          <div class="float-card-sub">1 workout left</div>
+        </div>
+
+        <!-- Phone mockup -->
+        <div class="hero-phone">
+          <div class="hero-phone-mockup">
+            <div class="hero-phone-status">
+              <span class="hero-phone-time">9:41</span>
+              <span class="hero-phone-icons">◼◼◼</span>
+            </div>
+            <!-- App UI preview -->
+            <div style="padding: 8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <div>
+                  <div style="font-size:11px;color:var(--txt-muted);font-weight:600;">GOOD MORNING</div>
+                  <div style="font-size:18px;font-weight:800;font-family:var(--font-head);letter-spacing:-0.5px;">Raymond! 👋</div>
+                </div>
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--orange-sub);border:2px solid var(--orange);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--orange);">R</div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+                <div style="background:rgba(255,102,0,0.1);border:1px solid var(--orange-brd);border-radius:12px;padding:10px;text-align:center;">
+                  <div style="font-size:15px;font-weight:900;color:var(--orange);">42g</div>
+                  <div style="font-size:9px;color:var(--txt-muted);font-weight:600;margin-top:2px;">PROTEIN</div>
+                </div>
+                <div style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.15);border-radius:12px;padding:10px;text-align:center;">
+                  <div style="font-size:15px;font-weight:900;color:var(--green);">128g</div>
+                  <div style="font-size:9px;color:var(--txt-muted);font-weight:600;margin-top:2px;">CARBS</div>
+                </div>
+                <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:12px;padding:10px;text-align:center;">
+                  <div style="font-size:15px;font-weight:900;color:var(--violet);">32g</div>
+                  <div style="font-size:9px;color:var(--txt-muted);font-weight:600;margin-top:2px;">FATS</div>
+                </div>
+              </div>
+
+              <div style="background:var(--orange-sub);border:1px solid var(--orange-brd);border-radius:16px;padding:14px;margin-bottom:10px;">
+                <div style="font-size:9px;font-weight:800;color:var(--orange);letter-spacing:1px;margin-bottom:6px;">🧠 AI SUGGESTION</div>
+                <div style="font-size:14px;font-weight:800;margin-bottom:4px;">Power Core Circuit</div>
+                <div style="font-size:11px;color:var(--txt-sec);">40 mins · ~320 kcal · Full body</div>
+                <div style="margin-top:12px;background:var(--orange);border-radius:50px;padding:8px;text-align:center;">
+                  <span style="font-size:11px;font-weight:800;color:#fff;">Start Workout →</span>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:8px;">
+                <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--glass-brd);border-radius:12px;padding:12px;text-align:center;">
+                  <div style="font-size:20px;margin-bottom:4px;">📋</div>
+                  <div style="font-size:11px;font-weight:700;">Library</div>
+                </div>
+                <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--glass-brd);border-radius:12px;padding:12px;text-align:center;">
+                  <div style="font-size:20px;margin-bottom:4px;">📷</div>
+                  <div style="font-size:11px;font-weight:700;">AI Scan</div>
+                </div>
+                <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--glass-brd);border-radius:12px;padding:12px;text-align:center;">
+                  <div style="font-size:20px;margin-bottom:4px;">📊</div>
+                  <div style="font-size:11px;font-weight:700;">Progress</div>
+                </div>
+              </div>
+
+              <!-- Tab bar -->
+              <div style="display:flex;margin-top:14px;background:rgba(255,255,255,0.03);border-radius:16px;padding:8px;gap:4px;">
+                <div style="flex:1;border-radius:10px;background:var(--orange-sub);padding:6px;text-align:center;">
+                  <div style="font-size:14px;">⌂</div>
+                  <div style="font-size:8px;color:var(--orange);font-weight:700;margin-top:1px;">Home</div>
+                </div>
+                <div style="flex:1;padding:6px;text-align:center;">
+                  <div style="font-size:14px;">⊞</div>
+                  <div style="font-size:8px;color:var(--txt-muted);font-weight:600;margin-top:1px;">Workout</div>
+                </div>
+                <div style="flex:1;padding:6px;text-align:center;">
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--glass);border:2px solid rgba(255,255,255,0.1);margin:0 auto 1px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:-8px;">+</div>
+                </div>
+                <div style="flex:1;padding:6px;text-align:center;">
+                  <div style="font-size:14px;">⊕</div>
+                  <div style="font-size:8px;color:var(--txt-muted);font-weight:600;margin-top:1px;">Nutrition</div>
+                </div>
+                <div style="flex:1;padding:6px;text-align:center;">
+                  <div style="font-size:14px;">◯</div>
+                  <div style="font-size:8px;color:var(--txt-muted);font-weight:600;margin-top:1px;">Profile</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ TRUSTED ══════════════ -->
+<div class="trusted reveal">
+  <div class="trusted-inner">
+    <span class="trusted-label">Trusted by athletes from</span>
+    <div class="trusted-logos">
+      <span class="trusted-logo">CrossFit</span>
+      <span class="trusted-logo">Equinox</span>
+      <span class="trusted-logo">Peloton</span>
+      <span class="trusted-logo">Nike Run</span>
+      <span class="trusted-logo">Strava</span>
+      <span class="trusted-logo">Gymshark</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ FEATURES ══════════════ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="features-header reveal">
+      <div class="section-label">Core Features</div>
+      <h2>Everything your fitness journey needs</h2>
+      <p>From real-time AI form scanning to intelligent nutrition tracking — NOVA Core has you covered at every step.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon orange">🤖</div>
+        <h3>AI Form Scanner</h3>
+        <p>Point your camera at any exercise and NOVA Core's computer vision engine analyzes your form in real-time, giving instant correction feedback to prevent injury and maximize gains.</p>
+        <span class="feature-tag orange">Computer Vision</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon green">📊</div>
+        <h3>Smart Progress Tracking</h3>
+        <p>Intelligent progression detection knows exactly when you're ready to level up. Track PRs, volume, streaks, and weekly goals with AI-generated insights.</p>
+        <span class="feature-tag green">AI Insights</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon violet">🥗</div>
+        <h3>Nutrition Intelligence</h3>
+        <p>Log meals, track macros, and get real-time recommendations based on your workout output and fitness goals. Protein, carbs, fats — all automated.</p>
+        <span class="feature-tag violet">Macro Tracking</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon orange">💪</div>
+        <h3>300+ Exercise Library</h3>
+        <p>A comprehensive library of exercises with detailed video guides, muscle activation maps, and difficulty ratings. Filter by equipment, muscle group, or intensity.</p>
+        <span class="feature-tag orange">Full Library</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon green">🔥</div>
+        <h3>Streak & Gamification</h3>
+        <p>Stay motivated with daily streaks, achievement badges, and weekly challenges. Compete with friends and hit milestones that keep you coming back.</p>
+        <span class="feature-tag green">Gamified</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon violet">🧠</div>
+        <h3>Adaptive Coaching</h3>
+        <p>NOVA learns your patterns and adapts your workout plan automatically. It knows when you need rest, when to push, and when to switch things up for maximum results.</p>
+        <span class="feature-tag violet">Adaptive AI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ STATS ══════════════ -->
+<div class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-num" data-target="50000">0</div>
+        <div class="stat-label">Active Athletes</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-num" data-target="98">0</div>
+        <div class="stat-label">% Form Accuracy</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-num" data-target="2400000">0</div>
+        <div class="stat-label">Workouts Logged</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-num" data-target="4.9">0</div>
+        <div class="stat-label">★ App Store Rating</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ HOW IT WORKS ══════════════ -->
+<section class="section how" id="how-it-works">
+  <div class="container">
+    <div class="how-grid">
+      <div class="how-steps">
+        <div class="section-label reveal">How It Works</div>
+        <h2 style="font-family:var(--font-head);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-1.5px;line-height:1.1;margin-bottom:8px;" class="reveal">
+          Start training smarter in <span class="grad-text">3 steps</span>
+        </h2>
+        <p style="color:var(--txt-sec);margin-bottom:40px;" class="reveal">No complicated setup. NOVA Core gets you moving in minutes.</p>
+
+        <div class="how-step reveal">
+          <div class="how-step-num">01</div>
+          <div class="how-step-content">
+            <h3>Create Your Profile</h3>
+            <p>Sign up in seconds. Tell NOVA your goals, fitness level, and available equipment — and it builds your first personalized plan instantly.</p>
+          </div>
+        </div>
+        <div class="how-step reveal reveal-delay-1">
+          <div class="how-step-num">02</div>
+          <div class="how-step-content">
+            <h3>Activate AI Scan</h3>
+            <p>Open the camera during any workout. The real-time AI overlay tracks your form, counts reps, and alerts you to corrections before bad habits form.</p>
+          </div>
+        </div>
+        <div class="how-step reveal reveal-delay-2">
+          <div class="how-step-num">03</div>
+          <div class="how-step-content">
+            <h3>Track & Progress</h3>
+            <p>Log nutrition, review your heatmap, celebrate PRs, and watch NOVA intelligently increase your training load as you get stronger.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="how-visual reveal">
+        <div class="how-screen">
+          <div class="how-screen-header">
+            <span class="how-screen-title">AI Form Analysis</span>
+            <span class="how-screen-badge">● LIVE</span>
+          </div>
+          <div class="how-screen-body">
+            <div class="scan-animation">
+              <div class="scan-line"></div>
+              <div class="scan-corners"></div>
+              <div class="scan-avatar">🏋️</div>
+            </div>
+            <div class="scan-metrics">
+              <div class="scan-metric">
+                <div class="scan-metric-val">94%</div>
+                <div class="scan-metric-lbl">FORM SCORE</div>
+              </div>
+              <div class="scan-metric">
+                <div class="scan-metric-val">12</div>
+                <div class="scan-metric-lbl">REPS DONE</div>
+              </div>
+              <div class="scan-metric">
+                <div class="scan-metric-val">2:45</div>
+                <div class="scan-metric-lbl">ELAPSED</div>
+              </div>
+            </div>
+            <div style="margin-top:14px;background:rgba(255,102,0,0.08);border:1px solid rgba(255,102,0,0.2);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">✓</div>
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--orange);">Great depth! Keep it up.</div>
+                <div style="font-size:11px;color:var(--txt-muted);margin-top:2px;">Keep knees aligned with toes</div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;display:flex;gap:10px;">
+              <div style="flex:1;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:12px;text-align:center;">
+                <div style="font-size:11px;color:var(--violet);font-weight:700;margin-bottom:4px;">QUADS</div>
+                <div style="height:6px;border-radius:3px;background:rgba(255,255,255,0.07);">
+                  <div style="width:82%;height:100%;border-radius:3px;background:var(--violet);"></div>
+                </div>
+                <div style="font-size:10px;color:var(--txt-muted);margin-top:4px;">82% activation</div>
+              </div>
+              <div style="flex:1;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.15);border-radius:12px;padding:12px;text-align:center;">
+                <div style="font-size:11px;color:var(--green);font-weight:700;margin-bottom:4px;">GLUTES</div>
+                <div style="height:6px;border-radius:3px;background:rgba(255,255,255,0.07);">
+                  <div style="width:67%;height:100%;border-radius:3px;background:var(--green);"></div>
+                </div>
+                <div style="font-size:10px;color:var(--txt-muted);margin-top:4px;">67% activation</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Glow effect behind screen -->
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle, rgba(255,102,0,0.1) 0%, transparent 70%);pointer-events:none;z-index:-1;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TESTIMONIALS ══════════════ -->
+<section class="section" id="testimonials">
+  <div class="container">
+    <div class="testimonials-header reveal">
+      <div class="section-label">Community Love</div>
+      <h2>Real people. Real results.</h2>
+      <p>Join 50,000+ athletes who transformed their training with NOVA Core.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The AI form scanner is an absolute game changer. I corrected my squat depth after just one session and the gains started rolling in. Best fitness app I've ever used."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background: linear-gradient(135deg, var(--orange), #cc4400);">M</div>
+          <div>
+            <div class="testimonial-name">Marcus T.</div>
+            <div class="testimonial-role">Powerlifter · 8 months with NOVA</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I lost 18 pounds in 3 months just by following the nutrition tracking and smart workout suggestions. NOVA knows when to push and when to rest. It's like having a coach 24/7."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background: linear-gradient(135deg, var(--green), #00cc6a);">S</div>
+          <div>
+            <div class="testimonial-name">Sophia K.</div>
+            <div class="testimonial-role">Runner · 3 months with NOVA</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The progression intelligence is incredibly smart. It suggested increasing my bench weight at exactly the right time. My total volume has gone up 40% in 6 months. Insane results."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background: linear-gradient(135deg, var(--violet), #6d28d9);">J</div>
+          <div>
+            <div class="testimonial-name">James O.</div>
+            <div class="testimonial-role">Bodybuilder · 6 months with NOVA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA ══════════════ -->
+<section class="cta-section" id="download">
+  <div class="cta-bg"></div>
+  <div class="cta-content">
+    <div class="badge reveal" style="margin: 0 auto 24px;">🎯 Limited Beta Access</div>
+    <h2 class="reveal">
+      Ready to unlock your<br><span class="grad-text">peak performance?</span>
+    </h2>
+    <p class="reveal">Join thousands of athletes already training smarter. Free for the first 30 days — no credit card required.</p>
+    <div class="cta-input-row reveal">
+      <input type="email" class="cta-input" id="ctaEmail" placeholder="Enter your email..." />
+      <button class="btn-primary" onclick="handleCTASubmit()" id="ctaBtn" style="white-space:nowrap;">
+        Get Early Access 🚀
+      </button>
+    </div>
+    <p class="cta-note reveal">By signing up you agree to our Terms & Privacy Policy. Unsubscribe at any time.</p>
+    <div class="cta-badges reveal">
+      <div class="cta-badge"><div class="cta-badge-dot"></div> 30-day free trial</div>
+      <div class="cta-badge"><div class="cta-badge-dot"></div> No credit card needed</div>
+      <div class="cta-badge"><div class="cta-badge-dot"></div> Cancel anytime</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="footer-logo-dot"></div>
+        <span class="footer-logo-text">NOVA <span style="color:var(--orange)">Core</span></span>
+      </div>
+      <p class="footer-desc">Your personal AI fitness coach. Train smarter, recover better, and hit your goals with the power of artificial intelligence.</p>
+      <div class="footer-social">
+        <div class="footer-social-btn" title="Twitter">🐦</div>
+        <div class="footer-social-btn" title="Instagram">📸</div>
+        <div class="footer-social-btn" title="YouTube">▶</div>
+        <div class="footer-social-btn" title="Discord">💬</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#">AI Form Scanner</a></li>
+        <li><a href="#">Workout Library</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Status</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 <span>NOVA Core</span>. All rights reserved. Built for athletes, by athletes.</p>
+    <div class="footer-pills">
+      <a href="#" class="footer-pill">Privacy</a>
+      <a href="#" class="footer-pill">Terms</a>
+      <a href="#" class="footer-pill">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ SCRIPTS ══════════════ -->
+<script>
+  // ── Navbar scroll effect ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // ── Mobile menu ──
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenuClose = document.getElementById('mobileMenuClose');
+  const mobileMenu = document.getElementById('mobileMenu');
+  mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.add('open'));
+  mobileMenuClose.addEventListener('click', closeMobileMenu);
+  function closeMobileMenu() { mobileMenu.classList.remove('open'); }
+
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // ── Counter animation ──
+  function formatStat(val, target) {
+    if (target >= 1000000) return (val / 1000000).toFixed(1) + 'M';
+    if (target >= 1000) return (val / 1000).toFixed(0) + 'k';
+    if (target < 10) return val.toFixed(1);
+    return Math.round(val).toString();
+  }
+
+  const counters = document.querySelectorAll('.stat-num[data-target]');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const duration = 1800;
+        const start = performance.now();
+        function update(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = eased * target;
+          el.textContent = formatStat(current, target);
+          if (progress < 1) requestAnimationFrame(update);
+          else el.textContent = formatStat(target, target);
+        }
+        requestAnimationFrame(update);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(el => counterObserver.observe(el));
+
+  // ── CTA submit ──
+  function handleCTASubmit() {
+    const email = document.getElementById('ctaEmail').value;
+    const btn = document.getElementById('ctaBtn');
+    if (!email || !email.includes('@')) {
+      document.getElementById('ctaEmail').style.borderColor = '#FF3B5C';
+      setTimeout(() => document.getElementById('ctaEmail').style.borderColor = '', 1200);
+      return;
+    }
+    btn.textContent = '✅ You\'re on the list!';
+    btn.style.background = '#00CC6A';
+    document.getElementById('ctaEmail').value = '';
+    setTimeout(() => {
+      btn.textContent = 'Get Early Access 🚀';
+      btn.style.background = '';
+    }, 4000);
+  }
+
+  // Allow Enter key in email input
+  document.getElementById('ctaEmail').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleCTASubmit();
+  });
+</script>
+</body>
+</html>

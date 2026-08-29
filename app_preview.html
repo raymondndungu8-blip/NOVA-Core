@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVACore Preview</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0D1B2A; /* off-black navy */
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #0D1B2A;
+            background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80'); /* Gym background */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            border-radius: 40px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 10px solid #222;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px 20px;
+        }
+
+        .header {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .title {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .highlight {
+            color: #43A047; /* primary-green */
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #B8C5D6; /* WCAG AAA secondary */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .glass-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px; /* hard edge — Pro Tool */
+            padding: 20px;
+            margin-bottom: 30px;
+            max-width: 280px;
+        }
+
+        .instruction {
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: center;
+            color: white;
+            font-weight: 300;
+        }
+
+        .instruction strong {
+            color: #64B5F6; /* trust-light */
+            font-weight: 600;
+        }
+
+        .start-btn-outer {
+            width: 80px;
+            height: 80px;
+            background-color: #43A047; /* primary-green */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid rgba(129, 199, 132, 0.4); /* vitality-light */
+            box-shadow: 0 0 20px rgba(67, 160, 71, 0.4);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .start-btn-outer:active {
+            transform: scale(0.95);
+        }
+
+        .start-btn-inner {
+            width: 24px;
+            height: 24px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .start-label {
+            margin-top: 16px;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+
+        /* Simulation of Status Bar */
+        .status-bar {
+            position: absolute;
+            top: 15px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 25px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-frame">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>Items</span>
+        </div>
+        
+        <div class="overlay">
+            <div class="header">
+                <div class="title">NOVA<span class="highlight">Core</span></div>
+                <div class="subtitle">AI Workout Vision</div>
+            </div>
+
+            <div class="controls">
+                <div class="glass-box">
+                    <div class="instruction">
+                        Align your body or equipment within the frame.<br>
+                        <strong>Nova AI</strong> will analyze your form.
+                    </div>
+                </div>
+
+                <div class="start-btn-outer" onclick="alert('Starting AI Scan...')">
+                    <div class="start-btn-inner"></div>
+                </div>
+                
+                <div class="start-label">START</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
