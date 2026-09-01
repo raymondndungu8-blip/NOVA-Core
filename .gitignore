@@ -2,3 +2,4 @@ node_modules/
 .expo/
 nova-web-export/
 *.log
+.vercel
