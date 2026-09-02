@@ -17,12 +17,25 @@ function AuthScreen() {
   const [isSignIn, setIsSignIn] = useState(true);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-500 via-emerald-500 to-green-600 flex items-center justify-center p-4">
-      {isSignIn ? (
-        <SignIn onToggle={() => setIsSignIn(false)} />
-      ) : (
-        <SignUp onToggle={() => setIsSignIn(true)} />
-      )}
+    <div className="min-h-screen bg-[#07070b] flex items-center justify-center sm:p-6">
+      <div
+        className="relative min-h-screen w-full max-w-[430px] overflow-hidden bg-[#111019] text-white shadow-2xl sm:min-h-[820px] sm:rounded-[28px] sm:border sm:border-white/10"
+        style={{
+          backgroundImage:
+            "linear-gradient(180deg, rgba(8,8,12,0.08) 0%, rgba(8,8,12,0.35) 30%, #111019 60%, #111019 100%), url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=85')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-[#111019]" />
+        <div className="relative z-10 min-h-screen sm:min-h-[820px]">
+          {isSignIn ? (
+            <SignIn onToggle={() => setIsSignIn(false)} />
+          ) : (
+            <SignUp onToggle={() => setIsSignIn(true)} />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
