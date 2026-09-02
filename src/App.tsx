@@ -4,6 +4,7 @@ import { SignIn } from './components/Auth/SignIn';
 import { SignUp } from './components/Auth/SignUp';
 import { Navigation } from './components/Layout/Navigation';
 import { Dashboard } from './pages/Dashboard';
+import { Dashboard as DemoDashboard } from './pages/DashboardReference';
 import { WorkoutLibrary } from './pages/WorkoutLibrary';
 import { CameraScan } from './pages/CameraScan';
 import { Progress } from './pages/Progress';
@@ -13,7 +14,7 @@ import { CycleTracking } from './pages/CycleTracking';
 import { Community } from './pages/Community';
 import { Profile } from './pages/Profile';
 
-function AuthScreen() {
+function AuthScreen({ onDemo }: { onDemo: () => void }) {
   const [isSignIn, setIsSignIn] = useState(true);
 
   return (
@@ -30,7 +31,7 @@ function AuthScreen() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-[#111019]" />
         <div className="relative z-10 min-h-screen sm:min-h-[820px]">
           {isSignIn ? (
-            <SignIn onToggle={() => setIsSignIn(false)} />
+            <SignIn onToggle={() => setIsSignIn(false)} onDemo={onDemo} />
           ) : (
             <SignUp onToggle={() => setIsSignIn(true)} />
           )}
@@ -43,6 +44,7 @@ function AuthScreen() {
 function MainApp() {
   const { user, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [demoMode, setDemoMode] = useState(false);
 
   if (loading) {
     return (
@@ -52,8 +54,12 @@ function MainApp() {
     );
   }
 
-  if (!user) {
-    return <AuthScreen />;
+  if (!user && !demoMode) {
+    return <AuthScreen onDemo={() => setDemoMode(true)} />;
+  }
+
+  if (demoMode) {
+    return <DemoDashboard demo onNavigate={setActiveTab} />;
   }
 
   return (

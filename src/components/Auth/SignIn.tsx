@@ -3,12 +3,13 @@ import { useAuth } from '../../contexts/AuthContext';
 
 interface SignInProps {
   onToggle: () => void;
+  onDemo: () => void;
 }
 
 const fieldClass =
   'w-full rounded-full border border-white/10 bg-[#211f2c]/95 px-11 py-3.5 text-sm text-white placeholder:text-[#777485] outline-none transition focus:border-[#ff6b16] focus:ring-2 focus:ring-[#ff6b16]/20';
 
-export function SignIn({ onToggle }: SignInProps) {
+export function SignIn({ onToggle, onDemo }: SignInProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +65,7 @@ export function SignIn({ onToggle }: SignInProps) {
         <button type="button" className="rounded-full bg-white py-3 text-xs font-semibold text-[#15141c] transition hover:bg-white/90">G&nbsp; Google</button>
         <button type="button" className="rounded-full border border-white/10 bg-[#211f2c] py-3 text-xs font-semibold text-white transition hover:bg-white/10">●&nbsp; Apple</button>
       </div>
-      <button type="button" className="mt-3 w-full rounded-full border border-[#ff6b16] bg-[#2b1a18]/80 py-3 text-xs font-semibold text-[#ff9a5f] transition hover:bg-[#ff6b16]/15">✦&nbsp; Try Guest Demo</button>
+      <button type="button" onClick={onDemo} className="mt-3 w-full rounded-full border border-[#ff6b16] bg-[#2b1a18]/80 py-3 text-xs font-semibold text-[#ff9a5f] transition hover:bg-[#ff6b16]/15">✦&nbsp; Try Guest Demo</button>
     </div>
   );
 }
