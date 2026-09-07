@@ -27,11 +27,12 @@ export function SignIn({ onToggle, onDemo }: SignInProps) {
 
   return (
     <div className="flex min-h-screen flex-col justify-end px-7 pb-8 pt-16 sm:min-h-[820px]">
-      <div className="mb-7 pl-0">
-        <div className="mb-4 h-3 w-3 rounded-full bg-[#ff6b16] shadow-[0_0_18px_rgba(255,107,22,0.75)]" />
-        <h1 className="text-[3.8rem] font-black leading-[0.78] tracking-[-0.09em] text-white">NOVA</h1>
-        <div className="mt-2 font-light italic leading-none tracking-[-0.06em] text-white/90 text-[3.4rem]">Core</div>
-        <p className="mt-3 text-[11px] tracking-wide text-white/80">Your personal AI fitness coach</p>
+      <div className="mb-7 flex justify-center pl-0">
+        <img
+          src="/assets/nova-core-orbit-spark.png"
+          alt="NOVA-Core — AI Fitness Coach"
+          className="h-auto w-full max-w-[290px] object-contain"
+        />
       </div>
 
       <div className="rounded-2xl bg-[#1a1924]/90 p-0.5 shadow-2xl backdrop-blur-md">
