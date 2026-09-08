@@ -35,9 +35,9 @@ function AuthLanding({
             className="absolute inset-0 h-full w-full object-cover"
           />
           <img
-            src="/assets/nova-core-orbit-spark-transparent.png"
+            src="/assets/nova-core-orbit-spark-overlay.png"
             alt="NOVA-Core Orbit Spark logo"
-            className="pointer-events-none absolute left-[5%] top-[3%] z-10 w-[18%] object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]"
+            className="pointer-events-none absolute left-[5%] top-[3%] z-10 w-[18%] object-contain mix-blend-screen drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]"
           />
 
           <button
